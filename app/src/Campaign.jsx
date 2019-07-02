@@ -1,11 +1,8 @@
 import React from 'react';
+import Details from './Details.jsx';
 
 let Campaign = (props) => (
-  <div>
-    <div><img src={props.campaign.campaign_icon_url} alt =''/></div>
-    <div>{props.campaign.campaign_name}</div>
-    <div>{props.campaign.pay_per_install}</div>
-  </div>
+  <Details campaign={props.campaign}/>
 )
 
 export default Campaign;
