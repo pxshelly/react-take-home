@@ -2,6 +2,7 @@ import React from 'react';
 import Campaign from './Campaign';
 import axios from 'axios';
 import Error from './Error.jsx';
+import NavBar from './NavBar.jsx';
 import './App.css';
 
 
@@ -44,6 +45,7 @@ class App extends React.Component {
     }
     return (
       <div className="App">
+        <NavBar />
         {body}
       </div>
     );
