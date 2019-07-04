@@ -5,7 +5,6 @@ import Error from './Error.jsx';
 import NavBar from './NavBar.jsx';
 import './App.css';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,13 +12,32 @@ class App extends React.Component {
       campaigns: [],
       hasError: false
     }
+    this.yStart = 0;
+    this.yStop = 0;
     this.refresh = this.refresh.bind(this);
+    this.updateStartCoordinates = this.updateStartCoordinates.bind(this);
+    this.updateEndCoordinates = this.updateEndCoordinates.bind(this);
+    this.checkPullDown = this.checkPullDown.bind(this);
   }
+
+  updateStartCoordinates(e) {
+    this.yStart = e.changedTouches[0].screenY;
+  }
+
+  updateEndCoordinates(e) {
+    this.yStop = e.changedTouches[0].screenY;
+    this.checkPullDown(this.yStop-this.yStart);
+  }
+
+  checkPullDown(deltaY) {
+    if(deltaY >= 50 && window.scrollY <= 0) {
+      this.refresh();
+    }
+  }  
 
   refresh() {
     axios.get('https://www.plugco.in/public/take_home_sample_feed')
     .then(response => {
-      console.log(response.data.campaigns);
       this.setState({
         campaigns: response.data.campaigns,
         hasError: false
@@ -31,6 +49,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    document.addEventListener('touchstart', (e) => this.updateStartCoordinates(e), false);
+    document.addEventListener('touchend', (e) => this.updateEndCoordinates(e), false);
     this.refresh();
   }
   
